@@ -18,10 +18,10 @@ namespace UPnPCastor.Core.UPnP.Service.AVTransport
         [XmlNamespaceDeclarations]
         public XmlSerializerNamespaces xmlns = new(new[]
         {
-            new XmlQualifiedName("m", AVTransportService.Namespace)
+            new XmlQualifiedName("u", AVTransportService.Namespace)
         });
 
-        [XmlElement(nameof(InstanceID), Namespace = null)]
+        [XmlElement(nameof(InstanceID), Namespace = "")]
         public int InstanceID { get; set; } = 0;
     }
 }

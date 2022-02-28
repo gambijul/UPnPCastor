@@ -1,10 +1,11 @@
 ﻿using System.Xml;
 using System.Xml.Serialization;
+using UPnPCastor.Core.IO;
 
 namespace UPnPCastor.Core.Soap
 {
     [Serializable]
-    [XmlRoot("SOAP-ENV:Envelope")]
+    [XmlRoot("s:Envelope")]
     public class Envelope
     {
         public const string Namespace = "http://schemas.xmlsoap.org/soap/envelope/";
@@ -12,7 +13,7 @@ namespace UPnPCastor.Core.Soap
         [XmlNamespaceDeclarations]
         public XmlSerializerNamespaces xmlns = new(new[]
         {
-            new XmlQualifiedName("SOAP-ENV", Namespace)
+            new XmlQualifiedName("s", Namespace)
         });
 
         [XmlElement(nameof(Body), Namespace = Namespace)]
@@ -26,11 +27,12 @@ namespace UPnPCastor.Core.Soap
             XmlSerializerNamespaces namespaces = new();
             namespaces.Add(string.Empty, string.Empty);
 
-            using StringWriter stringWriter = new();
-            using XmlWriter xmlWriter = XmlWriter.Create(stringWriter, new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true });
+            XmlWriterSettings xmlWriterSettings = new() { Indent = true };
 
-            stringWriter.WriteLine("<?xml version=\"1.0\"?>");
-            new XmlSerializer(GetType()).Serialize(xmlWriter, this, namespaces, null);
+            using StringWriterUtf8 stringWriter = new();
+            using XmlWriter xmlWriter = XmlWriter.Create(stringWriter, xmlWriterSettings);
+
+            new XmlSerializer(GetType()).Serialize(xmlWriter, this, namespaces);
 
             return stringWriter.ToString()!
                 .Replace("_x003A_", ":")

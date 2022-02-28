@@ -22,14 +22,7 @@ namespace UPnPCastor.Core.UPnP.Service.AVTransport.Actions
                     {
                         new Resource()
                         {
-                            Duration = new TimeSpan(0, 0, 9, 56, 480),
-                            Bitrate = 1556918,
-                            Resolution = "1920x1080",
                             ProtocolInfo = new ProtocolInfo(uri).ToString(),
-                            SampleFrequency = 48000,
-                            BitsPerSample = 16,
-                            NrAudioChannels = 5,
-                            Codec = "{5634504D-0000-0010-8000-00AA00389B71}",
                             Uri = uri.ToString()
                         }
                     },

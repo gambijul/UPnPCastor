@@ -90,8 +90,7 @@
             this.TxtUri.Name = "TxtUri";
             this.TxtUri.Size = new System.Drawing.Size(329, 23);
             this.TxtUri.TabIndex = 5;
-            this.TxtUri.Text = "http://commondatastorage.googleapis.com/gtv-videos-bucket/big_buck_bunny_1080p.mp" +
-    "4";
+            this.TxtUri.Text = "http://commondatastorage.googleapis.com/gtv-videos-bucket/big_buck_bunny_1080p.mp4";
             // 
             // LblUri
             // 

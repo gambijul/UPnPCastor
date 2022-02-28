@@ -1,5 +1,6 @@
 ﻿using Rssdp;
 using System.Net;
+using System.Text;
 using UPnPCastor.Core.UPnP.Control;
 using UPnPCastor.Core.UPnP.Service;
 
@@ -29,7 +30,7 @@ namespace UPnPCastor.Core.Soap
             client.DefaultRequestHeaders.Add("SOAPAction", $"{AVTransportService.Namespace}#{uPnPServiceName}");
 
             Envelope envelope = new() { Body = new(_avTransportAction) };
-            StringContent httpContent = new(envelope.Serialize(), null, "text/xml");
+            StringContent httpContent = new(envelope.Serialize(), Encoding.UTF8, "text/xml");
             HttpResponseMessage response = await client.PostAsync(requestUri, httpContent);
 
             // UPnP error coming from the remote device
