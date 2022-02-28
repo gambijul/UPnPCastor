@@ -29,7 +29,7 @@ namespace UPnPCastor
             }
         }
 
-        private async void CmdPlay_Click(object sender, EventArgs e)
+        private async void CmdCast_Click(object sender, EventArgs e)
         {
             try
             {
@@ -49,17 +49,38 @@ namespace UPnPCastor
             }
         }
 
+        private async void CmdPlay_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cbDevices.SelectedItem is not SsdpDevice device) return;
+
+                SoapHttpRequest request;
+
+                request = new(device, new Play());
+                await request.SendAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private async void CmdPause_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    if (cbDevices.SelectedItem is not Device device) return;
-            //    await _controlPoint.PauseAsync(device);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+            try
+            {
+                if (cbDevices.SelectedItem is not SsdpDevice device) return;
+
+                SoapHttpRequest request;
+
+                request = new(device, new Pause());
+                await request.SendAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async void CmdStop_Click(object sender, EventArgs e)

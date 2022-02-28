@@ -34,7 +34,7 @@ namespace UPnPCastor.Core.Soap
 
             return stringWriter.ToString()!
                 .Replace("_x003A_", ":")
-                .Replace(nameof(Body.AVTransportAction), Body.AVTransportAction.GetType().Name);
+                .Replace(nameof(Body.Action), Body.Action.GetType().Name);
         }
     }
 }

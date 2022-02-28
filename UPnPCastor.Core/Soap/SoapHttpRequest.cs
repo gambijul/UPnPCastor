@@ -1,7 +1,5 @@
 ﻿using Rssdp;
 using System.Net;
-using System.Xml;
-using System.Xml.Serialization;
 using UPnPCastor.Core.UPnP.Control;
 using UPnPCastor.Core.UPnP.Service;
 
@@ -18,7 +16,7 @@ namespace UPnPCastor.Core.Soap
             _avTransportAction = avTransportAction;
         }
 
-        public async Task SendAsync()
+        public async Task<object?> SendAsync()
         {
             SsdpService ssdpService = _device.Services.First(s => s.ServiceType == "AVTransport");
             Uri requestUri = new(_device.ToRootDevice().Location, ssdpService.ControlUrl);
@@ -26,10 +24,7 @@ namespace UPnPCastor.Core.Soap
 
             using HttpClient client = new();
 
-            //client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
-            //client.DefaultRequestHeaders.Add("Connection", "Close");
             client.DefaultRequestHeaders.Add("Pragma", "no-cache");
-            //client.DefaultRequestHeaders.Add("Content-Type", "text/xml; charset=\"utf-8\"");
             client.DefaultRequestHeaders.Add("FriendlyName.DLNA.ORG", Environment.MachineName);
             client.DefaultRequestHeaders.Add("SOAPAction", $"{AVTransportService.Namespace}#{uPnPServiceName}");
 
@@ -38,18 +33,14 @@ namespace UPnPCastor.Core.Soap
             HttpResponseMessage response = await client.PostAsync(requestUri, httpContent);
 
             // UPnP error coming from the remote device
-            if (response.StatusCode == HttpStatusCode.InternalServerError)
-            {
-                if (UPnPError.Parse(response) is UPnPError uPnPError)
-                {
-                    throw new Exception($"UPnP error: {uPnPError.Code} {uPnPError.Description}.");
-                }
-            }
+            if (response.StatusCode == HttpStatusCode.InternalServerError && Body.ParseFault(response)?.Detail.UPnPError is UPnPError uPnPError)
+                throw new Exception($"UPnP error: {uPnPError.Code} {uPnPError.Description}.");
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(response.ReasonPhrase);
-            }
+            // Generic exception
+            if (!response.IsSuccessStatusCode) throw new Exception(response.ReasonPhrase);
+
+            string content = await response.Content.ReadAsStringAsync();
+            return Body.ParseResponse(response);
         }
     }
 }

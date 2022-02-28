@@ -8,6 +8,7 @@ namespace UPnPCastor.Core.UPnP.Service.AVTransport
     [XmlInclude(typeof(GetMediaInfo))]
     [XmlInclude(typeof(GetPositionInfo))]
     [XmlInclude(typeof(GetTransportInfo))]
+    [XmlInclude(typeof(Pause))]
     [XmlInclude(typeof(Play))]
     [XmlInclude(typeof(SetAVTransportURI))]
     [XmlInclude(typeof(Stop))]

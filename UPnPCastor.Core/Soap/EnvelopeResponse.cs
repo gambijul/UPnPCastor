@@ -4,7 +4,7 @@ namespace UPnPCastor.Core.Soap
 {
     [Serializable]
     [XmlRoot(ElementName = "Envelope", Namespace = Envelope.Namespace)]
-    public class EnvelopeError
+    public class EnvelopeResponse
     {
 
         [XmlElement(nameof(Body), Namespace = Envelope.Namespace)]
